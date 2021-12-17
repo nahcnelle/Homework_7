@@ -1,20 +1,27 @@
 package edu.usfca.cs.echan13;
 
-// Ellen Chan
-// CS 514
-// Homework 7
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ *  The PlaylistTest class tests the relevant methods in
+ *  the Playlist class.
+ *
+ *  @author Ellen Chan
+ *
+ */
 class PlaylistTest {
     Playlist playlist;
     Song s1, s2, s3, s4, s5;
     Artist artist;
     Album a1, a2, a3, a4, a5;
 
+    /**
+     * Creates various Song, Artist, and Album objects
+     *  for later use in the test methods.
+     */
     @BeforeEach
     void setUp() {
         playlist = new Playlist();
@@ -35,22 +42,21 @@ class PlaylistTest {
 
         s1.setArtist(artist);
         s1.setAlbum(a1);
-        //s1.setGenre("R&B");
         s2.setArtist(artist);
         s2.setAlbum(a2);
         s3.setArtist(artist);
         s3.setAlbum(a3);
-        //s3.setGenre("R&B");
         s3.setLiked(true);
         s4.setArtist(artist);
         s4.setAlbum(a4);
-        //s4.setGenre("R&B");
         s5.setArtist(artist);
         s5.setAlbum(a5);
         s5.setLiked(true);
-
     }
 
+    /**
+     * Prints the songs in the playlist.
+     */
     @Test
     void getSongs() {
         playlist.addSong(s1);
@@ -63,6 +69,9 @@ class PlaylistTest {
         System.out.println(playlist.getSongs());
     }
 
+    /**
+     * Adds songs to the playlist and checks the size of the playlist.
+     */
     @Test
     void addSong() {
         playlist.addSong(s1);
@@ -74,6 +83,10 @@ class PlaylistTest {
         assertTrue(playlist.songsPlaylist.size() == 5);
     }
 
+    /**
+     * Adds and deletes songs from the playlist, then checks
+     * the playlist size.
+     */
     @Test
     void deleteSong() {
         playlist.addSong(s1);
@@ -91,6 +104,9 @@ class PlaylistTest {
         assertTrue(playlist.songsPlaylist.size() == 3);
     }
 
+    /**
+     * Searches the playlist for songs.
+     */
     @Test
     void findSong() {
         playlist.addSong(s1);
@@ -107,6 +123,10 @@ class PlaylistTest {
         assertTrue(playlist.findSong(temp));
     }
 
+    /**
+     * Merges two playlists together and checks the new
+     * playlist's size.
+     */
     @Test
     void mergePlaylists() {
         Playlist playlist2 = new Playlist();
@@ -124,6 +144,10 @@ class PlaylistTest {
         System.out.println(temp.songsPlaylist);
     }
 
+    /**
+     * Shuffles the playlist and prints the playlist
+     * before and after the shuffling.
+     */
     @Test
     void shuffle() {
         playlist.addSong(s1);
@@ -139,6 +163,11 @@ class PlaylistTest {
         System.out.println(playlist.songsPlaylist);
     }
 
+    /**
+     * Sorts the playlist by liked songs and
+     * prints the playlist before and after the
+     * sorting.
+     */
     @Test
     void sortLiked() {
         playlist.addSong(s1);
@@ -154,18 +183,9 @@ class PlaylistTest {
         System.out.println(playlist.songsPlaylist);
     }
 
-    /*@Test
-    void genrePlaylist() {
-        playlist.addSong(s1);
-        playlist.addSong(s2);
-        playlist.addSong(s3);
-        playlist.addSong(s4);
-        playlist.addSong(s5);
-
-        Playlist genrePlaylist = playlist.genrePlaylist("R&B");
-        assertTrue(genrePlaylist.songsPlaylist.size() == 3);
-    }*/
-
+    /**
+     * Prints the XML representation of the library
+     */
     @Test
     void toXML() {
         playlist.addSong(s1);

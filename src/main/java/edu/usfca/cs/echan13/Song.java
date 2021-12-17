@@ -1,19 +1,34 @@
 package edu.usfca.cs.echan13;
 
-// Ellen Chan
-// CS 514
-// Homework 7
-
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
+/**
+ *  The Song class represents a song.
+ *  It stores values for the song's title, artist,
+ *  album, and if it is liked.
+ *  It extends the Entity class.
+ *
+ *  @author Ellen Chan
+ *
+ */
 public class Song extends Entity {
     protected Album album;
     protected Artist artist;
     protected boolean liked;
 
+    /**
+     * Creates an empty Song object.
+     */
     public Song() {
     }
 
+    /**
+     * Creates a Song object using the song's title
+     *
+     * @param name the song's title
+     */
     public Song(String name) {
         super(name);
         album = new Album();
@@ -21,30 +36,66 @@ public class Song extends Entity {
         liked = false;
     }
 
+    /**
+     * Returns the album the song is on.
+     *
+     * @return the song's album
+     */
     protected Album getAlbum() {
         return album;
     }
 
+    /**
+     * Sets the song's album.
+     *
+     * @param album the Album associated with this song
+     */
     protected void setAlbum(Album album) {
         this.album = album;
     }
 
+    /**
+     * Returns the song's artist.
+     *
+     * @return the Artist associated with this song
+     */
     public Artist getArtist() {
         return artist;
     }
 
+    /**
+     * Sets the song's artist.
+     *
+     * @param artist the song's artist
+     */
     public void setArtist(Artist artist) {
         this.artist = artist;
     }
 
+    /**
+     * Returns whether the song is a liked song.
+     *
+     * @return true if the song is liked, false if not
+     */
     public boolean isLiked() {
         return liked;
     }
 
+    /**
+     * Set whether the song is a liked song.
+     *
+     * @param liked the boolean if the song is liked
+     */
     public void setLiked(boolean liked) {
         this.liked = liked;
     }
 
+    /**
+     * Compares this song to the specified song.
+     *
+     * @param otherSong the other song to compare to
+     * @return true if the songs are equivalent, false if not
+     */
     public boolean equals(Song otherSong) {
         String tempSong = this.name.toLowerCase().replaceAll("\\p{Punct}", "");
         String tempOtherSong = otherSong.name.toLowerCase().replaceAll("\\p{Punct}", "");
@@ -63,10 +114,22 @@ public class Song extends Entity {
         return false;
     }
 
+    /**
+     * Returns a String object representing the song.
+     *
+     * @return a String object describing the song
+     */
     public String toString() {
         return "Song " + super.toString() + "    " + this.artist + "    " + this.album;
     }
 
+    /**
+     * Returns a String object representing the SQL command to add
+     * this song to the music.db database and also adds the
+     * song to the music.db database.
+     *
+     * @return a String representing the SQL command to add the song to a database
+     */
     public String toSQL() {
         StringBuilder buf = new StringBuilder();
         buf.append("insert into songs values(");
@@ -98,7 +161,13 @@ public class Song extends Entity {
         return buf.toString();
     }
 
-    public void fromSQL() {
+    /**
+     * Creates a list from the songs in the music.db database.
+     *
+     * @return the List object of songs found in the database
+     */
+    public List<Song> fromSQL() {
+        List<Song> tempList = new ArrayList<>();
         Connection connection = null;
         try {
             connection = DriverManager.getConnection("jdbc:sqlite:music.db");
@@ -136,7 +205,7 @@ public class Song extends Entity {
                     tempAlbum.setName(rsAlbum.getString("name"));
                 }
                 tempSong.setAlbum(tempAlbum);
-                System.out.println(tempSong);
+                tempList.add(tempSong);
             }
         } catch (SQLException e) {
             System.err.println(e.getMessage());
@@ -148,5 +217,6 @@ public class Song extends Entity {
                 System.err.println(e.getMessage());
             }
         }
+        return tempList;
     }
 }

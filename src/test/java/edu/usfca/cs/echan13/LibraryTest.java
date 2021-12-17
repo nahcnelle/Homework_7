@@ -1,9 +1,5 @@
 package edu.usfca.cs.echan13;
 
-// Ellen Chan
-// CS 514
-// Homework 7
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,12 +8,24 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ *  The LibraryTest class tests the relevant methods in
+ *  the Library class.
+ *
+ *  @author Ellen Chan
+ *
+ */
 class LibraryTest {
     Library lib;
     Song s1, s2, s3, s4, s5;
     Artist art1, art2;
     Album a1, a2, a3;
 
+    /**
+     * Creates various Song, Artist, and Album objects
+     *  and adds them to a library for later use in
+     *  the test methods.
+     */
     @BeforeEach
     void setUp() {
         lib = new Library();
@@ -57,6 +65,9 @@ class LibraryTest {
         lib.addSong(s5);
     }
 
+    /**
+     * Looks for a song in the library.
+     */
     @Test
     void findSong() {
         Song temp = new Song("Starboy");
@@ -67,11 +78,18 @@ class LibraryTest {
         assertTrue(lib.findSong(s1));
     }
 
+    /**
+     * Prints the songs in the library.
+     */
     @Test
     void getSongs() {
         System.out.println(lib.getSongs());
     }
 
+    /**
+     * Adds a song to the library and checks the
+     * new size of the library.
+     */
     @Test
     void addSong() {
         Song newSong = new Song("Ordinary Life");
@@ -79,6 +97,10 @@ class LibraryTest {
         assertTrue(lib.getSongs().size() == 6);
     }
 
+    /**
+     * Deletes a song from the library and checks the
+     * new size of the library
+     */
     @Test
     void deleteSong() {
         Song temp = new Song("Starboy");
@@ -91,6 +113,10 @@ class LibraryTest {
         assertTrue(lib.getSongs().size() == 3);
     }
 
+    /**
+     * Removes duplicate songs from the library.
+     * Prints the library before and after the removal.
+     */
     @Test
     void removeDupes() {
         ArrayList<Song> list = lib.getSongs();
@@ -109,11 +135,17 @@ class LibraryTest {
         }
     }
 
+    /**
+     * Checks if two songs in a library are duplicates.
+     */
     @Test
     void isDup() {
         assertTrue(lib.isDup(s1, s2));
     }
 
+    /**
+     * Prints the XML representation of the library
+     */
     @Test
     void toXML() {
         System.out.println(lib.toXML());

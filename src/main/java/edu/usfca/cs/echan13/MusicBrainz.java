@@ -8,9 +8,27 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ *  The MusicBrainz class fetches data from the
+ *  MusicBrainz website to fill in missing information
+ *  for Song, Artist, and Album objects. Methods to find
+ *  songs, artists, and albums are available for this purpose.
+ *
+ *  @author Ellen Chan
+ *
+ */
 
 public class MusicBrainz {
 
+    /**
+     * Returns a String representing the relevant data from MusicBrainz.
+     *
+     * @param n the Node containing data from MusicBrainz
+     * @return a String representing the data stored in the Node
+     */
     public static String getContent(Node n) {
         StringBuilder sb = new StringBuilder();
         Node child = n.getFirstChild();
@@ -18,12 +36,18 @@ public class MusicBrainz {
         return sb.toString();
     }
 
-    public static String artistSearch(String artistName) {
+    /**
+     * Searches the MusicBrainz database for a specific artist and
+     * returns a Map storing the first found artist's name
+     *
+     * @param artistName the specific artist to search for
+     * @return a Map containing the artist's name
+     */
+    public static Map<String, String> artistSearch(String artistName) {
+        Map<String, String> artistMap = new HashMap<>();
         String offArtistName = "";
         String initialURL = "https://musicbrainz.org/ws/2/artist?query=" + artistName + "&fmt=xml";
-        /* MusicBrainz gives each element in their DB a unique ID, called an MBID. We'll use this to fecth that. */
 
-        /* now let's parse the XML.  */
         try {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
@@ -33,22 +57,28 @@ public class MusicBrainz {
             u.setRequestProperty("User-Agent", "Application ExampleParser/1.0 (echan13@dons.usfca.edu");
 
             Document doc = db.parse(u.getInputStream());
-            /* let's get the artist-list node */
             NodeList artists = doc.getElementsByTagName("artist-list");
             /* let's assume that the one we want is first. */
             Node artistNode = artists.item(0).getFirstChild();
             offArtistName = getContent(artistNode.getFirstChild());
-            // to find id
-//            Node artistIDNode = artistNode.getAttributes().getNamedItem("id");
-//            String id = artistIDNode.getNodeValue();
 
         } catch (Exception ex) {
             System.out.println("XML parsing error" + ex);
         }
-        return offArtistName;
+        artistMap.put("artistName", offArtistName);
+        return artistMap;
     }
 
-    public static String albumSearch(String albumName) {
+    /**
+     * Searches the MusicBrainz database for a specific album and
+     * returns a Map storing the first found album title and its
+     * artist's name.
+     *
+     * @param albumName the specific album to search for
+     * @return a Map containing the album title and the artist's name
+     */
+    public static Map<String, String> albumSearch(String albumName) {
+        Map<String, String> albumMap = new HashMap<>();
         String offAlbumName = "";
         String artistName = "";
         Node subNode;
@@ -76,21 +106,30 @@ public class MusicBrainz {
                 if (subNode.getNodeName().equals("artist-credit")) {
                     artistName = getContent(subNode.getFirstChild().getFirstChild());
                 }
-
             }
-            System.out.println(artistName);
-
         } catch (Exception ex) {
             System.out.println("XML parsing error" + ex);
         }
-        return offAlbumName;
+        albumMap.put("albumName", offAlbumName);
+        albumMap.put("artistName", artistName);
+        return albumMap;
     }
 
-    public static String songSearch(String songName) {
-        String offAlbumName = "";
+    /**
+     * Searches the MusicBrainz database for a specific artist and
+     * returns a Map storing the first found song title, album title,
+     * and its artist's name.
+     *
+     * @param songName the specific song to search for
+     * @return a Map containing the song title, album title, and the artist's name
+     */
+    public static Map<String, String> songSearch(String songName) {
+        Map<String, String> songMap = new HashMap<>();
+        String offSongName = "";
+        String albumName = "";
         String artistName = "";
         Node subNode;
-        String initialURL = "https://musicbrainz.org/ws/2/release-group/?query=album+AND+" + songName.replaceAll(" ", "+");
+        String initialURL = "https://musicbrainz.org/ws/2/recording/?query=" + songName.replaceAll(" ", "+");
         /* MusicBrainz gives each element in their DB a unique ID, called an MBID. We'll use this to fecth that. */
 
         /* now let's parse the XML.  */
@@ -104,30 +143,27 @@ public class MusicBrainz {
 
             Document doc = db.parse(u.getInputStream());
             /* let's get the artist-list node */
-            NodeList albums = doc.getElementsByTagName("release-group-list");
+            NodeList songs = doc.getElementsByTagName("recording-list");
             /* let's assume that the one we want is first. */
-            Node albumNode = albums.item(0).getFirstChild();
-            NodeList albumAttributes = albumNode.getChildNodes();
-            offAlbumName = getContent(albumNode.getFirstChild());
-            for (int i = 0; i < albumAttributes.getLength(); i++) {
-                subNode = albumAttributes.item(i);
+            Node songNode = songs.item(0).getFirstChild();
+            NodeList songAttributes = songNode.getChildNodes();
+            offSongName = getContent(songNode.getFirstChild());
+            for (int i = 0; i < songAttributes.getLength(); i++) {
+                subNode = songAttributes.item(i);
                 if (subNode.getNodeName().equals("artist-credit")) {
                     artistName = getContent(subNode.getFirstChild().getFirstChild());
                 }
-
+                if (subNode.getNodeName().equals("release-list")) {
+                    albumName = getContent(subNode.getFirstChild().getFirstChild());
+                }
             }
-            System.out.println(artistName);
 
         } catch (Exception ex) {
             System.out.println("XML parsing error" + ex);
         }
-        return offAlbumName;
-    }
-
-    public static void main(String[] args) {
-        //TheAudioDBExample();
-        System.out.println(artistSearch("Beatles"));
-        System.out.println(albumSearch("after hours"));
-
+        songMap.put("songName", offSongName);
+        songMap.put("albumName", albumName);
+        songMap.put("artistName", artistName);
+        return songMap;
     }
 }

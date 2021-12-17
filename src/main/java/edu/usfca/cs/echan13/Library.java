@@ -1,20 +1,31 @@
 package edu.usfca.cs.echan13;
 
-// Ellen Chan
-// CS 514
-// Homework 7
-
-import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ *  The Library class represents a music library.
+ *  It stores a list of Song objects.
+ *
+ *  @author Ellen Chan
+ *
+ */
 public class Library {
     private ArrayList<Song> songs;
 
+    /**
+     * Creates a Library with an empty list of Songs.
+     */
     public Library() {
         songs = new ArrayList<Song>();
     }
 
+    /**
+     * Searches the library for a specific song.
+     *
+     * @param song the song to look for
+     * @return true if the Song object is in the library, false if not
+     */
     public boolean findSong(Song song) {
         boolean found = false;
         if (songs.contains(song)) {
@@ -33,14 +44,30 @@ public class Library {
         return found;
     }
 
+    /**
+     * Returns a list of the songs in the library
+     *
+     * @return an ArrayList of the present Song objects
+     */
     public ArrayList<Song> getSongs() {
         return songs;
     }
 
+    /**
+     * Adds a song to the library.
+     *
+     * @param song the Song object to add
+     */
     public void addSong(Song song) {
         songs.add(song);
     }
 
+    /**
+     * Deletes a song from the library
+     *
+     * @param song the Song object to delete
+     * @return true if the Song object is deleted, false if not
+     */
     public boolean deleteSong(Song song) {
         boolean deleted = false;
         if (songs.remove(song)) {
@@ -60,6 +87,9 @@ public class Library {
         return deleted;
     }
 
+    /**
+     * Searches the library and removes any duplicates.
+     */
     public void removeDupes() {
         Scanner scanner = new Scanner(System.in);
         for (int i = 0; i < songs.size(); i++) {
@@ -78,6 +108,13 @@ public class Library {
         }
     }
 
+    /**
+     * Compares two songs to determine if they are duplicates.
+     *
+     * @param s1 the first Song object to compare
+     * @param s2 the other Song object to compare
+     * @return true if the songs are duplicates, false if not
+     */
     protected boolean isDup(Song s1, Song s2) {
         if (s1.equals(s2)) {
             return true;
@@ -86,6 +123,12 @@ public class Library {
         }
     }
 
+    /**
+     * Returns a String object representing the Songs in this
+     * Library as XML.
+     *
+     * @return the String representation of the XML
+     */
     public String toXML() {
         StringBuilder buf = new StringBuilder();
         buf.append("<library>\n  <songs>\n");

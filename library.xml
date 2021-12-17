@@ -1,0 +1,70 @@
+<library>
+  <songs>
+	<song id="11">
+		<title>
+			Call Out My Name
+		</title>
+		<artist id="24">
+			
+		</artist>
+		<album id="23">
+			
+		</album>
+	</song>
+	<song id="301">
+		<title>
+			Say So
+		</title>
+		<artist id="101">
+			Doja Cat
+		</artist>
+		<album id="201">
+			Hot Pink
+		</album>
+	</song>
+	<song id="302">
+		<title>
+			Pasadena
+		</title>
+		<artist id="102">
+			Tinashe
+		</artist>
+		<album id="202">
+			333
+		</album>
+	</song>
+	<song id="303">
+		<title>
+			Wasted Times
+		</title>
+		<artist id="103">
+			The Weeknd
+		</artist>
+		<album id="203">
+			My Dear Melancholy
+		</album>
+	</song>
+	<song id="304">
+		<title>
+			Levitating
+		</title>
+		<artist id="104">
+			Dua Lipa
+		</artist>
+		<album id="204">
+			Future Nostalgia
+		</album>
+	</song>
+	<song id="305">
+		<title>
+			pov
+		</title>
+		<artist id="105">
+			Ariana Grande
+		</artist>
+		<album id="205">
+			positions
+		</album>
+	</song>
+  </songs>
+</library>

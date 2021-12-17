@@ -1,29 +1,52 @@
 package edu.usfca.cs.echan13;
 
-// Ellen Chan
-// CS 514
-// Homework 7
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+/**
+ *  The Playlist class represents a music playlist.
+ *  It stores a list of Song objects which can be added
+ *  and deleted to, searched through, and shuffled.
+ *
+ *  @author Ellen Chan
+ *
+ */
 public class Playlist {
     protected List<Song> songsPlaylist;
 
+    /**
+     * Creates a Playlist with an empty list of Songs.
+     */
     public Playlist() {
         songsPlaylist = new ArrayList<Song>();
     }
 
+    /**
+     * Returns a list of the songs in the playlist
+     *
+     * @return a List of the Songs
+     */
     public List<Song> getSongs() {
         return songsPlaylist;
     }
 
+    /**
+     * Adds a Song object to the playlist.
+     *
+     * @param song the Song object to be added
+     */
     public void addSong(Song song) {
         songsPlaylist.add(song);
     }
 
+    /**
+     * Deletes a Song object from the playlist.
+     *
+     * @param song the Song object to be deleted
+     * @return true o=if the Song is removed, false if not
+     */
     public boolean deleteSong(Song song) {
         boolean deleted = false;
         if (songsPlaylist.remove(song)) {
@@ -43,6 +66,12 @@ public class Playlist {
         return deleted;
     }
 
+    /**
+     * Searches the playlist of songs for a specific song.
+     *
+     * @param song the Song object to find
+     * @return true if the Song is in the playlist, false if not
+     */
     public boolean findSong(Song song) {
         boolean found = false;
         if (songsPlaylist.contains(song)) {
@@ -61,6 +90,13 @@ public class Playlist {
         return found;
     }
 
+    /**
+     * Creates a new Playlist by combining the songs in this playlist
+     * with another.
+     *
+     * @param otherPlaylist the other playlist to add to this one
+     * @return a new Playlist object containing the songs in both playlists
+     */
     public Playlist mergePlaylists(Playlist otherPlaylist) {
         Playlist mergedPlaylist = new Playlist();
         HashSet<Song> songSet = new HashSet<>();
@@ -71,10 +107,16 @@ public class Playlist {
         return mergedPlaylist;
     }
 
+    /**
+     * Shuffles the order of the songs in this playlist
+     */
     public void shuffle() {
         Collections.shuffle(songsPlaylist);
     }
 
+    /**
+     * Rearranges so liked songs are at the front of the list
+     */
     public void sortLiked(){
         int numLiked = 0;
         for (int i = 0; i < songsPlaylist.size(); i++) {
@@ -87,16 +129,12 @@ public class Playlist {
         }
     }
 
-    /*public Playlist genrePlaylist(String genre) {
-        Playlist genrePlaylist = new Playlist();
-        for (Song song:songsPlaylist) {
-            if (song.getGenre().equals(genre)) {
-                genrePlaylist.addSong(song);
-            }
-        }
-        return genrePlaylist;
-    }*/
-
+    /**
+     * Returns a String object representing the Songs in this
+     * Playlist as XML.
+     *
+     * @return the String representation of the XML
+     */
     public String toXML() {
         StringBuilder buf = new StringBuilder();
         buf.append("<library>\n  <songs>\n");

@@ -1,20 +1,27 @@
 package edu.usfca.cs.echan13;
 
-// Ellen Chan
-// CS 514
-// Homework 7
-
-
 import org.junit.jupiter.api.Test;
 
 import java.sql.*;
+import java.util.List;
 
-
+/**
+ *  The ArtistTest class tests the relevant SQL methods in
+ *  the Artist class.
+ *
+ *  @author Ellen Chan
+ *
+ */
 class ArtistTest {
     Artist artist;
     ResultSet rs;
     Connection connection;
 
+    /**
+     * Adds an Artist object to a SQL database.
+     * Prints the artist information for the added
+     * artist Joji.
+     */
     @Test
     void toSQL() {
         connection = null;
@@ -28,7 +35,7 @@ class ArtistTest {
             artist.setNAlbums(3);
             artist.setEntityID(15);
             artist.toSQL();
-            rs = statement.executeQuery("select * from artists");
+            rs = statement.executeQuery("select * from artists where id = 15");
             while (rs.next()) {
                 System.out.print("artist name: " + rs.getString("name"));
                 System.out.print(" id: " + rs.getInt("id"));
@@ -47,9 +54,17 @@ class ArtistTest {
         }
     }
 
+    /**
+     * Creates a list of Artists from a database and prints
+     * the result.
+     */
     @Test
     void fromSQL() {
         artist = new Artist();
-        artist.fromSQL();
+        List<Artist> artistList;
+        artistList = artist.fromSQL();
+        for (Artist artists:artistList) {
+            System.out.println(artists);
+        }
     }
 }

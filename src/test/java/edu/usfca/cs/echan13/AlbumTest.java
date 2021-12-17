@@ -1,19 +1,27 @@
 package edu.usfca.cs.echan13;
 
-// Ellen Chan
-// CS 514
-// Homework 7
-
-
 import org.junit.jupiter.api.Test;
 
 import java.sql.*;
+import java.util.List;
 
+/**
+ *  The AlbumTest class tests the relevant SQL methods in
+ *  the Album class.
+ *
+ *  @author Ellen Chan
+ *
+ */
 class AlbumTest {
     Album album;
     ResultSet rs;
     Connection connection;
 
+    /**
+     * Adds an Album object to a SQL database.
+     * Prints the album information for the added
+     * Nectar album by Joji.
+     */
     @Test
     void toSQL() {
         connection = null;
@@ -27,7 +35,7 @@ class AlbumTest {
             album.setNSongs(18);
             album.setEntityID(12);
             album.toSQL();
-            rs = statement.executeQuery("select * from albums");
+            rs = statement.executeQuery("select * from albums where id = 12");
             while (rs.next()) {
                 System.out.print("album name: " + rs.getString("name"));
                 System.out.print(" id: " + rs.getInt("id"));
@@ -46,9 +54,17 @@ class AlbumTest {
         }
     }
 
+    /**
+     * Creates a list of Albums from a database and prints
+     * the result.
+     */
     @Test
     void fromSQL() {
         album = new Album();
-        album.fromSQL();
+        List<Album> albumList;
+        albumList = album.fromSQL();
+        for (Album albums:albumList) {
+            System.out.println(albums);
+        }
     }
 }

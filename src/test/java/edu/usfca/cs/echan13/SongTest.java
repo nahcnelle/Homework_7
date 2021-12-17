@@ -1,18 +1,27 @@
 package edu.usfca.cs.echan13;
 
-// Ellen Chan
-// CS 514
-// Homework 7
-
 import org.junit.jupiter.api.Test;
 
 import java.sql.*;
+import java.util.List;
 
+/**
+ *  The SongTest class tests the relevant SQL methods in
+ *  the Song class.
+ *
+ *  @author Ellen Chan
+ *
+ */
 class SongTest {
     Song song;
     ResultSet rs;
     Connection connection;
 
+    /**
+     * Adds a Song object to a SQL database.
+     * Prints the song information for the added
+     * song "Call Out My Name" by The Weeknd.
+     */
     @Test
     void toSQL() {
         connection = null;
@@ -26,7 +35,7 @@ class SongTest {
             song.setArtist(new Artist("The Weeknd"));
             song.setEntityID(11);
             song.toSQL();
-            rs = statement.executeQuery("select * from songs");
+            rs = statement.executeQuery("select * from songs where id = 11");
             while (rs.next()) {
                 System.out.print("song name: " + rs.getString("name"));
                 System.out.print(" id: " + rs.getInt("id"));
@@ -46,9 +55,18 @@ class SongTest {
         }
     }
 
+    /**
+     * Creates a list of Songs from a database and prints
+     * the result.
+     */
     @Test
     void fromSQL() {
         song = new Song();
-        song.fromSQL();
+        List<Song> songList;
+        songList = song.fromSQL();
+        for (Song songs:songList) {
+            System.out.println(songs);
+        }
+
     }
 }
